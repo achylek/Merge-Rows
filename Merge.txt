@@ -1,0 +1,21 @@
+Sub Merge()
+	Dim i, j, k, firstRow, lastRow As Long
+
+	Sheet1.Activate
+	
+	For i = firstRow To lastRow
+		If Application.WorksheetFunction.CountIf(Range("A"&firstRow, "A"&lastRow), Range("A"&i)) > 1 Then
+			For j = lastRow To firstRow Step -1
+				If Cells(j, 1) = Cells(i, 1) And i<>j
+					For k = 1 To Sheet1.UsedRange.Columns.Count
+						If IsEmpty(Cells(i, k)) Then
+							Cells(j, k).Copy Cells(i, k)
+						End If
+					Next k
+					Rows(j).EntireRow.Delete
+					lastRow = lastRow - 1
+				End If
+			Next j
+		End If
+	Next i
+End Sub
